@@ -1,0 +1,682 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="看见同事在使用charls抓取https的数据，我心中起了疑惑，https不是加密的吗？为什么能被charls轻易抓包并获取明文数据呢？于是我开始研究https的原理和charls能够成功破获明文的原理。 1、https原理废话少说，忽略探索过程（其实主要是看别人的文章），下面简要阐述我的理解。  首先客户端要和服务器进行通信，以前使用http，是明文的，很容易被中途获取数据，被查看、篡改、伪装。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="第一个blog">
+<meta property="og:url" content="http://yoursite.com/2018/02/24/第一个blog/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="看见同事在使用charls抓取https的数据，我心中起了疑惑，https不是加密的吗？为什么能被charls轻易抓包并获取明文数据呢？于是我开始研究https的原理和charls能够成功破获明文的原理。 1、https原理废话少说，忽略探索过程（其实主要是看别人的文章），下面简要阐述我的理解。  首先客户端要和服务器进行通信，以前使用http，是明文的，很容易被中途获取数据，被查看、篡改、伪装。">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/2578902-69f7e5c6520ba780.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/2578902-49d8583d03a1109e.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:updated_time" content="2018-02-24T09:06:46.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="第一个blog">
+<meta name="twitter:description" content="看见同事在使用charls抓取https的数据，我心中起了疑惑，https不是加密的吗？为什么能被charls轻易抓包并获取明文数据呢？于是我开始研究https的原理和charls能够成功破获明文的原理。 1、https原理废话少说，忽略探索过程（其实主要是看别人的文章），下面简要阐述我的理解。  首先客户端要和服务器进行通信，以前使用http，是明文的，很容易被中途获取数据，被查看、篡改、伪装。">
+<meta name="twitter:image" content="http://upload-images.jianshu.io/upload_images/2578902-69f7e5c6520ba780.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/02/24/第一个blog/"/>
+
+
+
+
+
+  <title>第一个blog | Hexo</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Hexo</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Startseite
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archiv
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/02/24/第一个blog/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">第一个blog</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Veröffentlicht am</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-02-24T17:03:52+08:00">
+                2018-02-24
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>看见同事在使用charls抓取https的数据，我心中起了疑惑，https不是加密的吗？为什么能被charls轻易抓包并获取明文数据呢？于是我开始研究https的原理和charls能够成功破获明文的原理。</p>
+<h1 id="1、https原理"><a href="#1、https原理" class="headerlink" title="1、https原理"></a>1、https原理</h1><p>废话少说，忽略探索过程（其实主要是看别人的文章），下面简要阐述我的理解。</p>
+<ul>
+<li>首先客户端要和服务器进行通信，以前使用http，是明文的，很容易被中途获取数据，被查看、篡改、伪装。所以需要使用一种加密方式对通信内容进行加密。这个过程是对称加密，也就是双方协定一个秘钥，同时用来加密和解密。</li>
+<li>但是，服务器对客户端一般是一对多的关系，不可能服务器跟每一个设备或者浏览器都用同一个密码，这样中间拦截的人很容易知道密码同样很容易破解数据。所以需要服务器跟每一个通信的对象协商一个秘钥用来给通信的信息进行加密，一般是一个随机串。</li>
+<li>但是，这个随机的串是什么要怎么协商呢？如果直接发给客户端，那如果协商秘钥又被拦截了不就还是一样被破解通信信息了，所以，需要对这个秘钥进行加密，如果还是使用对称加密的方式，那么还要告诉客户端给秘钥加密的秘钥是什么（又点绕），所以就又绕回到原来的问题。这时候我们不能再使用对称加密（同一个秘钥加密解密）的方式了，需要用到一种非对称加密（公钥、私钥一对秘钥）的方式，因为通过私钥加密的数据只有相应的公钥能解密，而公钥加密的数据只有私钥能解密，而服务器生成的一对公钥和私钥，只有公钥是在互联网中传递的，而私钥一直只有自己保存，这样，虽然服务器向客户端发送消息过程是不安全的，但却保证了从客户端到服务端过程是安全的（私钥只有服务器知道）。所以只要让客户端生成随机秘钥（对称加密算法），然后发给服务器，完成协商，就可以了。</li>
+<li>但是，还是有问题的。如果中间有人，拦截了服务器发给客户端的公钥，然后自己生成了一对公钥和私钥，把服务器的公钥给掉包了，这样就可以使用自己的私钥进行解密，完成通信了。所以怎么保证服务器的公钥不会被掉包或者篡改呢？这时候就需要我们说的数字证书了。</li>
+<li>数字证书是如何保证公钥不会被调包或者篡改呢？首先，证书是公司跟第三方公司申请的，包含很多公司的信息，然后加入服务器生成的公钥，再用第三方公司自己的私钥加密，只有用第三方公司提供的公钥可以解密，而这些第三方的公钥是存储在我们操作系统或者客户端本地的，所以可以解密然后拿到证书中公司服务器最初产生的公钥。</li>
+<li>可能有人会问（比如我自己），既然客户端有第三方机构公开的公钥，那中间人也能拿到，在服务器返回证书给客户端的时候直接那公钥解密证书不就拿到服务器要传给客户端的公钥了？然后不就可以偷梁换柱了？但是你可能忘了，此时客户端要的不是公钥了，而是证书，你给他公钥没用，哈哈哈。</li>
+<li>也许有人会问，那中间人也从第三方公司申请证书，然后中间替换掉原来的证书不就可以像调包公钥那样完成数据窃取了？当然是不行的，因为每个公司申请的证书是唯一的，浏览器或者客户端在请求服务器的时候，如果不是指定证书是不能通过的。简单点说就是验证正在访问的服务器地址（或者其他标识）和证书中的服务器地址（或者其他标识）是否一致。</li>
+<li><p>那么新的问题来了，我怎么知道证书是不是我要证书呢？？有没有被中途篡改？？原因是证书有一套自己检验的机制，就是利用证书中保存的某些数据+证书生成证书编号的算法，然后自己生成一个证书编号，再和证书出厂时候的编号（也是加密的）进行比较，如果对的上就说明证书是有效的，没有被篡改过。</p>
+</li>
+<li><p>有人反映说不够清晰，所以从网上找了一张过程原理图，希望能让读者看的更加清晰。<br><img src="http://upload-images.jianshu.io/upload_images/2578902-69f7e5c6520ba780.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="屏幕快照 2017-10-28 下午6.27.35.png"></p>
+</li>
+</ul>
+<h1 id="2、charls如何抓去https的明文包"><a href="#2、charls如何抓去https的明文包" class="headerlink" title="2、charls如何抓去https的明文包"></a>2、charls如何抓去https的明文包</h1><p>上面讲了https如何的安全，现在又说可以用charls工具抓包获取明文信息，这不是很矛盾？如果charls能做到，那不是很多人都可以做到从通讯中途获取数据？那是不是说https没用，跟http是一样不安全的？可是上面https的原理明明感觉很安全了，我们又如何能够在这么安全的情况下截取数据呢？</p>
+<ul>
+<li>先附上一张网上其他人的原理图<br><img src="http://upload-images.jianshu.io/upload_images/2578902-49d8583d03a1109e.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="v2-a89764317e9b82ffc3c459626b16a136_hd.jpg"></li>
+<li><p>看的不是很明白？没关系，下面用一句话回答一下上面的问题。哈哈哈</p>
+</li>
+<li><p><strong>有些人认为https可以完美防止中间人攻击，无法抓到https的明文包…… 其实是不对的，TLS的设计只能说是从技术上最大限度地保护网络报文的安全，它无法防止用户自己作死。</strong></p>
+</li>
+<li><p>从第一部分https原理知道，最后保证安全的其实是我们客户端（浏览器）对服务端返回的证书的校验，但是如果我们客户端本地用户手动信任了某第三方证书，那么校验就直接通过了，自然也就能够获取到数据了。当然charls具体的原理没有我说的这么简单，但用charls抓过https包的人都知道，第一步就是要我们手动信任charls的证书（具体使用步骤请自行百度，有很多教程）。所以，也就解释了为什么https是无法防止用户自己作死的。</p>
+</li>
+</ul>
+<p>至此，终于码完了，过程描述比较复杂（写得比较粗陋），将就看吧。此外，手机码字好辛苦。有疑问欢迎指教，有不足之处欢迎指证。不喜勿喷</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/02/24/hello-world/" rel="next" title="Hello World">
+                <i class="fa fa-chevron-left"></i> Hello World
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Inhaltsverzeichnis
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Übersicht
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">John Doe</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">2</span>
+                  <span class="site-state-item-name">Artikel</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1、https原理"><span class="nav-number">1.</span> <span class="nav-text">1、https原理</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2、charls如何抓去https的明文包"><span class="nav-number">2.</span> <span class="nav-text">2、charls如何抓去https的明文包</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">John Doe</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Erstellt mit  <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
